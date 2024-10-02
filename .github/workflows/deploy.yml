@@ -3,8 +3,8 @@ name: Deploy React App to GitHub Pages
 on:
   push:
     branches:
-      - master # Trigger deployment on pushes to the master branch
-  workflow_dispatch: # Allow manual runs with custom inputs
+      - master  # Trigger deployment on pushes to the master branch
+  workflow_dispatch:  # Allow manual runs with custom inputs
     inputs:
       publish_api_version:
         description: "PUBLISH_API_VERSION to use"
@@ -34,9 +34,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Inject environment variables and build the React app
-      - name: Build React app with environment variables
+      # Step 4: Echo and Inject environment variables and build the React app
+      - name: Echo Environment Variables and Build
         run: |
+          echo "PUBLISH_API_VERSION=${{ vars.PUBLISH_API_VERSION }}"
+          echo "QUERY_API_VERSION=${{ vars.QUERY_API_VERSION }}"
           npm run build
         env:
           PUBLISH_API_VERSION: ${{ vars.PUBLISH_API_VERSION }}
@@ -49,6 +51,7 @@ jobs:
           npm run deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 # name: Deploy React App to GitHub Pages
 
 # on:
