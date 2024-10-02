@@ -3,7 +3,7 @@ name: Deploy React App to GitHub Pages
 on:
   push:
     branches:
-      - master # This runs the action when a push is made to the main branch
+      - master # or main, based on your default branch
 
 jobs:
   build-and-deploy:
@@ -34,9 +34,13 @@ jobs:
           PUBLISH_API_VERSION: ${{ secrets.PUBLISH_API_VERSION }}
           QUERY_API_VERSION: ${{ secrets.QUERY_API_VERSION }}
 
-      # Step 5: Deploy to GitHub Pages
+      # Step 5: Create .nojekyll file to disable Jekyll processing on GitHub Pages
+      - name: Create .nojekyll
+        run: echo "" > ./build/.nojekyll
+
+      # Step 6: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build # Specify the React build directory//
+          publish_dir: ./build # React build output directory
