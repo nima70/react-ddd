@@ -37,13 +37,13 @@ jobs:
       # Step 4: Echo and Inject environment variables and build the React app
       - name: Echo Environment Variables and Build
         run: |
-          echo "PUBLISH_API_VERSION=${{ vars.PUBLISH_API_VERSION }}"
-          echo "QUERY_API_VERSION=${{ vars.QUERY_API_VERSION }}"
+          echo "REACT_APP_PUBLISH_API_VERSION=${{ vars.REACT_APP_PUBLISH_API_VERSION }}"
+          echo "REACT_APP_QUERY_API_VERSION=${{ vars.REACT_APP_QUERY_API_VERSION }}"
           echo "GITHUB_REPOSITORY=${{ github.repository }}"
           npm run build
         env:
-          PUBLISH_API_VERSION: ${{ vars.PUBLISH_API_VERSION }}
-          QUERY_API_VERSION: ${{ vars.QUERY_API_VERSION }}
+          REACT_APP_PUBLISH_API_VERSION: ${{ vars.REACT_APP_PUBLISH_API_VERSION }}
+          REACT_APP_QUERY_API_VERSION: ${{ vars.REACT_APP_QUERY_API_VERSION }}
       # Step 5: Deploy the already built app using JamesIves/github-pages-deploy-action
       - name: Deploy with gh-pages
         uses: JamesIves/github-pages-deploy-action@releases/v3

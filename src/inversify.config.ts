@@ -9,7 +9,7 @@ const container = new Container();
 // Bind the FooService to the IFooService interface
 container.bind<IFooService>("Foo").to(FooService);
 // Determine the version of PublishAPI to use based on environment variable
-switch (process.env.PUBLISH_API_VERSION) {
+switch (process.env.REACT_APP_PUBLISH_API_VERSION) {
   case "2":
     container.bind("PublishAPI").to(PublishAPI_v2);
     break;
@@ -18,7 +18,7 @@ switch (process.env.PUBLISH_API_VERSION) {
     break;
 }
 // Determine the version of QueryAPI to use based on environment variable
-switch (process.env.QUERY_API_VERSION) {
+switch (process.env.REACT_APP_QUERY_API_VERSION) {
   case "2":
     container.bind("QueryAPI").to(QueryAPI_v2);
     break;
