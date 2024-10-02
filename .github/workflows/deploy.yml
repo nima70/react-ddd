@@ -51,6 +51,8 @@ jobs:
           npm run deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_API_VERSION: ${{ vars.PUBLISH_API_VERSION }}
+          QUERY_API_VERSION: ${{ vars.QUERY_API_VERSION }}
 
 # name: Deploy React App to GitHub Pages
 
