@@ -3,7 +3,7 @@ name: Deploy React App to GitHub Pages
 on:
   push:
     branches:
-      - master # Trigger deployment on pushes to the main branch
+      - master  # Trigger deployment on pushes to the master branch
 
 jobs:
   build-and-deploy:
@@ -18,7 +18,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18" # Ensure you're using a compatible Node.js version
+          node-version: "18"
 
       # Step 3: Install dependencies
       - name: Install dependencies
@@ -34,7 +34,7 @@ jobs:
           PUBLISH_API_VERSION: ${{ secrets.PUBLISH_API_VERSION }}
           QUERY_API_VERSION: ${{ secrets.QUERY_API_VERSION }}
 
-      # Step 5: Deploy with gh-pages
+      # Step 5: Deploy to GitHub Pages
       - name: Deploy with gh-pages
         run: |
           git remote set-url origin https://git:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
