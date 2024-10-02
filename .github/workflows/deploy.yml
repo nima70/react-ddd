@@ -3,7 +3,7 @@ name: Deploy React App to GitHub Pages
 on:
   push:
     branches:
-      - main  # This runs the action when a push is made to the main branch
+      - master # This runs the action when a push is made to the main branch
 
 jobs:
   build-and-deploy:
@@ -18,7 +18,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # Ensure you're using a compatible version
+          node-version: "18" # Ensure you're using a compatible version
 
       # Step 3: Install dependencies
       - name: Install dependencies
@@ -39,4 +39,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build  # Specify the React build directory
+          publish_dir: ./build # Specify the React build directory
