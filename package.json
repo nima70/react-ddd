@@ -25,7 +25,7 @@
     "build": "react-scripts build ",
     "test": "react-scripts test",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build --history false -u 'github-actions-bot <support+actions@github.com>'",
+    "deploy": "gh-pages -d build  false -u 'github-actions-bot <support+actions@github.com>'",
 
     "eject": "react-scripts eject"
   },
