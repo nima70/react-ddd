@@ -3,8 +3,8 @@ name: Deploy React App to GitHub Pages
 on:
   push:
     branches:
-      - master  # Trigger deployment on pushes to the master branch
-  workflow_dispatch:  # Allow manual runs with custom inputs
+      - master # Trigger deployment on pushes to the master branch
+  workflow_dispatch: # Allow manual runs with custom inputs
     inputs:
       publish_api_version:
         description: "PUBLISH_API_VERSION to use"
@@ -39,21 +39,25 @@ jobs:
         run: |
           echo "PUBLISH_API_VERSION=${{ vars.PUBLISH_API_VERSION }}"
           echo "QUERY_API_VERSION=${{ vars.QUERY_API_VERSION }}"
+          echo "GITHUB_REPOSITORY=${{ github.repository }}"
           npm run build
         env:
           PUBLISH_API_VERSION: ${{ vars.PUBLISH_API_VERSION }}
           QUERY_API_VERSION: ${{ vars.QUERY_API_VERSION }}
-
-      # Step 5: Deploy to GitHub Pages
+      # Step 5: Deploy the already built app using JamesIves/github-pages-deploy-action
       - name: Deploy with gh-pages
-        run: |
-          git remote set-url origin https://git:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-          npm run deploy
-        env:
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_API_VERSION: ${{ vars.PUBLISH_API_VERSION }}
-          QUERY_API_VERSION: ${{ vars.QUERY_API_VERSION }}
-
+          BRANCH: gh-pages # The branch you want to deploy to (gh-pages)
+          FOLDER: build # Use the existing 'build' folder created in the previous step
+      # # Step 5: Deploy to GitHub Pages
+      # - name: Deploy with gh-pages
+      #   run: |
+      #     git remote set-url origin https://git:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+      #     npm run deploy
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 # name: Deploy React App to GitHub Pages
 
 # on:
