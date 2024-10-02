@@ -4,16 +4,16 @@ on:
   push:
     branches:
       - master # Trigger deployment on pushes to the master branch
-  workflow_dispatch:
+  workflow_dispatch: # Allow manual runs with custom inputs
     inputs:
       publish_api_version:
         description: "PUBLISH_API_VERSION to use"
         required: true
-        default: "2"
+        default: "1"
       query_api_version:
         description: "QUERY_API_VERSION to use"
         required: true
-        default: "2"
+        default: "1"
 
 jobs:
   build-and-deploy:
@@ -37,12 +37,10 @@ jobs:
       # Step 4: Inject environment variables and build the React app
       - name: Build React app with environment variables
         run: |
-          echo "PUBLISH_API_VERSION=${{ github.event.inputs.publish_api_version }}" >> .env
-          echo "QUERY_API_VERSION=${{ github.event.inputs.query_api_version }}" >> .env
           npm run build
         env:
-          PUBLISH_API_VERSION: ${{ github.event.inputs.publish_api_version }}
-          QUERY_API_VERSION: ${{ github.event.inputs.query_api_version }}
+          PUBLISH_API_VERSION: ${{ vars.PUBLISH_API_VERSION }}
+          QUERY_API_VERSION: ${{ vars.QUERY_API_VERSION }}
 
       # Step 5: Deploy to GitHub Pages
       - name: Deploy with gh-pages
