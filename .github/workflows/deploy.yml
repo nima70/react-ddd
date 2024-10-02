@@ -3,7 +3,7 @@ name: Deploy React App to GitHub Pages
 on:
   push:
     branches:
-      - master # or main, based on your default branch
+      - master  # or main, based on your default branch
 
 jobs:
   build-and-deploy:
@@ -18,18 +18,18 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18" # Ensure you're using a compatible version
+          node-version: "18"  # Ensure you're using a compatible version
 
       # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Inject environment variables and build the React app
+      # Step 4: Set NODE_ENV to production, inject environment variables, and build the React app
       - name: Build React app with environment variables
         run: |
           echo "PUBLISH_API_VERSION=${{ secrets.PUBLISH_API_VERSION }}" >> .env
           echo "QUERY_API_VERSION=${{ secrets.QUERY_API_VERSION }}" >> .env
-          npm run build
+          NODE_ENV=production npm run build
         env:
           PUBLISH_API_VERSION: ${{ secrets.PUBLISH_API_VERSION }}
           QUERY_API_VERSION: ${{ secrets.QUERY_API_VERSION }}
@@ -43,4 +43,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs # React build output directory
+          publish_dir: ./docs  # Use the docs directory
