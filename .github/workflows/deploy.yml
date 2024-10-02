@@ -1,16 +1,16 @@
-name: Build and Deploy React App to GitHub Pages
+name: Deploy React App to GitHub Pages
 
 on:
   push:
     branches:
-      - main  # or your default branch
+      - main # Trigger deployment on pushes to the main branch
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout code
+      # Step 1: Checkout the code from the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -18,19 +18,26 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18  # Ensure you are using a compatible version
+          node-version: "18" # Ensure you're using a compatible Node.js version
 
       # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Build the React app
-      - name: Build React app
-        run: NODE_ENV=production npm run build
+      # Step 4: Inject environment variables and build the React app
+      - name: Build React app with environment variables
+        run: |
+          echo "PUBLISH_API_VERSION=${{ secrets.PUBLISH_API_VERSION }}" >> .env
+          echo "QUERY_API_VERSION=${{ secrets.QUERY_API_VERSION }}" >> .env
+          npm run build
+        env:
+          PUBLISH_API_VERSION: ${{ secrets.PUBLISH_API_VERSION }}
+          QUERY_API_VERSION: ${{ secrets.QUERY_API_VERSION }}
 
-      # Step 5: Deploy to GitHub Pages root
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build  # Deploy from the build directory to the root of gh-pages
+      # Step 5: Deploy with gh-pages
+      - name: Deploy with gh-pages
+        run: |
+          git remote set-url origin https://git:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          npm run deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
