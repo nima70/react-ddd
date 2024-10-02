@@ -1,16 +1,16 @@
-name: Deploy React App to GitHub Pages
+name: Build and Deploy React App to GitHub Pages
 
 on:
   push:
     branches:
-      - master  # or main, based on your default branch
+      - main # or your default branch
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the code from the repository
+      # Step 1: Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -18,29 +18,21 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18"  # Ensure you're using a compatible version
+          node-version: 18 # Ensure you are using a compatible version
 
-      # Step 3: Install dependencies
+      # Step 3: Install root dependencies
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Set NODE_ENV to production, inject environment variables, and build the React app
-      - name: Build React app with environment variables
+      # Step 4: Build React app and move it to docs folder
+      - name: Build React app
         run: |
-          echo "PUBLISH_API_VERSION=${{ secrets.PUBLISH_API_VERSION }}" >> .env
-          echo "QUERY_API_VERSION=${{ secrets.QUERY_API_VERSION }}" >> .env
           NODE_ENV=production npm run build
-        env:
-          PUBLISH_API_VERSION: ${{ secrets.PUBLISH_API_VERSION }}
-          QUERY_API_VERSION: ${{ secrets.QUERY_API_VERSION }}
+          mv build docs
 
-      # Step 5: Create .nojekyll file to disable Jekyll processing on GitHub Pages
-      - name: Create .nojekyll
-        run: echo "" > ./docs/.nojekyll
-
-      # Step 6: Deploy to GitHub Pages
+      # Step 5: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs  # Use the docs directory
+          publish_dir: ./docs
