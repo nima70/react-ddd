@@ -9,11 +9,11 @@ on:
       publish_api_version:
         description: "PUBLISH_API_VERSION to use"
         required: true
-        default: "1"
+        default: "2"
       query_api_version:
         description: "QUERY_API_VERSION to use"
         required: true
-        default: "1"
+        default: "2"
 
 jobs:
   build-and-deploy:
