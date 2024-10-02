@@ -3,7 +3,7 @@ name: Build and Deploy React App to GitHub Pages
 on:
   push:
     branches:
-      - main # or your default branch
+      - main  # or your default branch
 
 jobs:
   build:
@@ -18,21 +18,19 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18 # Ensure you are using a compatible version
+          node-version: 18  # Ensure you are using a compatible version
 
-      # Step 3: Install root dependencies
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Build React app and move it to docs folder
+      # Step 4: Build the React app
       - name: Build React app
-        run: |
-          NODE_ENV=production npm run build
-          mv build docs
+        run: NODE_ENV=production npm run build
 
-      # Step 5: Deploy to GitHub Pages
+      # Step 5: Deploy to GitHub Pages root
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
+          publish_dir: ./build  # Deploy from the build directory to the root of gh-pages
